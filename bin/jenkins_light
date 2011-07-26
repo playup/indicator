@@ -1,0 +1,48 @@
+#!/usr/bin/env ruby
+require 'net/http'
+require 'rubygems'
+require 'json'
+
+INDICATOR_URL = URI.parse("http://localhost:4567")
+
+JENKINS_URL = URI.parse("#{ENV['JENKINS_URL']}/api/json/")
+
+SLEEP_TIME = 2
+
+def indicator(indicator_str)
+  #puts indicator_str
+  #exit
+  Net::HTTP.get(INDICATOR_URL+indicator_str)
+end
+
+i=0
+begin
+  while i+=1
+    color = begin
+      body = Net::HTTP.get(JENKINS_URL)
+      if body.empty?
+        "white"                             # The lights are on, but nobody's home
+      else
+        jobs = JSON.load(body)["jobs"]
+        colors = jobs.collect { |j| j["color"] }
+        if colors.include? "red"
+          "red"                             # At least one light is red
+        elsif colors.include? "red_anime"
+          i % 2 == 0 ? "red" : "blue"       # No lights are red, but at least one is flashing red
+        elsif colors.include? "blue_anime"
+          i % 2 == 0 ? "blue" : "green"     # All lights are green, but at least one is flashing green
+        elsif colors.include? "blue"
+          "green"                           # All lights are green
+        else
+          "yellow"                          # Buggered if I know
+        end
+      end
+    rescue Exception => e
+      "bluegreen?n=50&duration=0.3"         # Something bad, probably a network error
+    end
+    indicator(color)
+    sleep SLEEP_TIME
+  end
+ensure
+  indicator("off")                          # Turn the indicator off when you're done
+end

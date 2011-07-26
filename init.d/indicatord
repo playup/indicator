@@ -1,0 +1,36 @@
+#!/bin/sh
+### BEGIN INIT INFO
+# Provides:          indicatord
+# Required-Start:    $syslog
+# Required-Stop:     $syslog
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Start daemon at boot time
+# Description:       Enable service provided by daemon.
+### END INIT INFO
+
+DAEMON=indicatord #/usr/local/bin/indicatord
+NAME=indicatord
+DESC="indicator server"
+
+set -e
+
+case "$1" in
+    start)
+        echo -n "Starting $DESC: " 
+        start-stop-daemon --start --pidfile /var/run/$NAME.pid --make-pidfile --background --startas $DAEMON -- $CONFIGFILE
+        echo "$NAME."
+        ;;
+    stop)
+        echo -n "Stopping $DESC: "
+        start-stop-daemon --stop --oknodo --quiet --pidfile /var/run/$NAME.pid
+        rm -f /var/run/$NAME.pid
+        echo "$NAME."
+        ;;
+    *)
+        echo "Usage: $0 { start | stop }" >&2
+        exit 1
+        ;;
+esac
+
+exit 0
