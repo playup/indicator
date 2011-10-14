@@ -1,6 +1,6 @@
-#!/bin/sh
+#!/bin/bash
 ### BEGIN INIT INFO
-# Provides:          jenkins_light
+# Provides:          jenkins_monitor_light
 # Required-Start:    $indicatord
 # Required-Stop:     $indicatord
 # Default-Start:     2 3 4 5
@@ -9,15 +9,20 @@
 # Description:       Enable service provided by daemon.
 ### END INIT INFO
 
-DAEMON=jenkins_light #/usr/local/bin/jenkins_light
-NAME=jenkins_light
-DESC="Jenkins light"
+DAEMON=/usr/local/bin/jenkins_light
+NAME=jenkins_monitor_light
+DESC="Jenkins monitor light"
+
+export DEVICE_NUMBER=1
+export JENKINS_VIEW="monitor_light"
 
 set -e
 
+source /usr/local/rvm/scripts/rvm
+
 case "$1" in
     start)
-        echo -n "Starting $DESC: " 
+        echo -n "Starting $DESC: "
         start-stop-daemon --start --pidfile /var/run/$NAME.pid --make-pidfile --background --startas $DAEMON -- $CONFIGFILE
         echo "$NAME."
         ;;
@@ -27,7 +32,7 @@ case "$1" in
         rm -f /var/run/$NAME.pid
         echo "$NAME."
         ;;
-    *)
+    *)  
         echo "Usage: $0 { start | stop }" >&2
         exit 1
         ;;

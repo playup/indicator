@@ -1,8 +1,12 @@
-#!/usr/bin/ruby -rrubygems
-require 'sinatra'
-require 'delcom_904006'
+#!/usr/local/rvm/rubies/ruby-1.9.2-p180/bin/ruby
 
-get '/:color' do
+require 'rubygems'
+require 'sinatra'
+require_relative './delcom_904006'
+
+get '/:device_number/:color' do
+  device_number = params.delete('device_number').to_i
+  indicator = Delcom::SignalIndicator.new(device_number)
   color = params.delete('color')
   flash_options = nil
   if params.keys.include? 'n' or params.keys.include? 'duration'
@@ -10,16 +14,14 @@ get '/:color' do
       :n        => (params.delete('n')        || Delcom::SignalIndicator::FLASH_N).to_i,
       :duration => (params.delete('duration') || Delcom::SignalIndicator::FLASH_DURATION).to_f,
     }
-    Delcom::SignalIndicator.flash(color, flash_options)
+    indicator.flash(color, flash_options)
   else
-    Delcom::SignalIndicator.send(color)
+    indicator.send(color)
   end
   haml :index, :locals => { :color => color, :flash_options => flash_options }
 end
 
-
 __END__
-
 
 @@ index
 %body{:bgcolor=>color}
