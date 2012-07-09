@@ -2,7 +2,7 @@
 
 require 'rubygems'
 require 'sinatra'
-require_relative './delcom_904006'
+require 'delcom_904006'
 
 get '/:device_number/:color' do
   device_number = params.delete('device_number').to_i
