@@ -6,7 +6,7 @@ TEXT
 
 
 Gem::Specification.new do |s|
-  s.name        = "indicator"
+  s.name        = "indicator_delcom"
   s.summary     = %q{Sinatra app that drives the delcom indicator light}
   s.description = description
   s.homepage    = "http://github.com/playup/indicator"
