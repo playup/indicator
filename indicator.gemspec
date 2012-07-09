@@ -13,7 +13,7 @@ Gem::Specification.new do |s|
   s.authors     = ["PlayUp Devops"]
   s.email       = ["devops@playup.com"]
 
-  s.version     = '0.0.3'
+  s.version     = '0.0.4'
   s.platform    = Gem::Platform::RUBY
 
   s.add_runtime_dependency 'sinatra'  , '1.0'
