@@ -10,8 +10,6 @@ JENKINS_URL = URI.parse("#{ENV['JENKINS_URL']}/api/json/")
 SLEEP_TIME = 2
 
 def indicator(indicator_str)
-  puts indicator_str
-  #exit
   Net::HTTP.get(INDICATOR_URL+indicator_str)
 end
 
@@ -20,7 +18,6 @@ begin
   while i+=1
     color = begin
       body = Net::HTTP.get(JENKINS_URL)
-      puts JENKINS_URL
       if body.empty?
         "white"                             # The lights are on, but nobody's home
       else
