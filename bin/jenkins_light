@@ -3,7 +3,7 @@ require 'net/http'
 require 'rubygems'
 require 'json'
 
-INDICATOR_URL = URI.parse("http://localhost:4567/0/")
+INDICATOR_URL = URI.parse("http://localhost:4567/#{{ENV['DEVICE_NUMBER']}/")
 
 JENKINS_URL = URI.parse("#{ENV['JENKINS_URL']}/api/json/")
 
