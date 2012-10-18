@@ -31,6 +31,8 @@ begin
           i % 2 == 0 ? "blue" : "green"     # All lights are green, but at least one is flashing green
         elsif colors.include? "blue"
           "green"                           # All lights are green
+        elsif colors.include? "aborted_anime"
+          i % 2 == 0 ? "blue" : "yellow"     # All lights are green, but at least one is flashing green
         else
           "yellow"                          # Buggered if I know
         end
